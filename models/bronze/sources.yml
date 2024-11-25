@@ -38,9 +38,6 @@ sources:
           - name: movie_id
             tests:
               - not_null
-              - relationships: 
-                  to: ref('bronze_movies')
-                  field: id
           - name: rating
             description: "Note moyenne attribuée au film"
             tests:

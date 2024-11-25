@@ -1,0 +1,14 @@
+dbt_workflow_dkt:
+  outputs:
+    dev:
+      dataset: Bronze_dbt_workflow
+      job_execution_timeout_seconds: 200
+      job_retries: 1
+      keyfile: /Users/wtayo/keys/dbt_workflow_sa.json
+      location: EU
+      method: service-account
+      priority: interactive
+      project: wtayo-sandbox
+      threads: 3
+      type: bigquery
+  target: dev
