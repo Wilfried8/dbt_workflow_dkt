@@ -1,0 +1,50 @@
+version: 2
+
+sources:
+  - name: Bronze_dbt_workflow
+    description: "Contient les données brutes provenant de la table bronze_table"
+    #database: BigQuery
+    tables:
+      - name: raw_movies
+        description: "Table contenant les données brutes des films"
+        columns:
+          - name: id
+            tests:
+              - unique
+              - not_null
+          - name: title
+            description: "Titre du film"
+            tests:
+              - not_null
+          - name: director
+            description: "Réalisateur du film"
+          - name: year
+            description: "Année de sortie du film"
+            tests:
+              - not_null
+              - custom_range: 
+                  min: 1700
+                  max: 2026
+          - name: length_minutes
+            description: "Durée du film en minutes"
+            tests:
+              - not_null
+              - custom_range:
+                  min: 2
+                  max: 500
+      - name: raw_sales_movies
+        description: "Table contenant les données brutes des ventes de films"
+        columns:
+          - name: movie_id
+            tests:
+              - not_null
+              - relationships: 
+                  to: ref('bronze_movies')
+                  field: id
+          - name: rating
+            description: "Note moyenne attribuée au film"
+            tests:
+              - not_null
+              - custom_range:
+                  min: 0
+                  max: 10
