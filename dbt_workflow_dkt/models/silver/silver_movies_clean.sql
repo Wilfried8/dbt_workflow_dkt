@@ -14,8 +14,9 @@ WITH cleaned_data AS (
     WHERE 
         id IS NOT NULL
         AND title IS NOT NULL
-       -- AND year BETWEEN 1900 AND 2100
-        --AND length_minutes BETWEEN 1 AND 600
+        AND year BETWEEN 1997 AND 2100
+        AND length_minutes BETWEEN 1 AND 200
+        qualify row_number() over (partition by title, director) = 1 
 ),
 
 deduplicated_data AS (

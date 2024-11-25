@@ -37,6 +37,8 @@ models:
     bronze:
       +materialized: view
     silver:
+      +schema: silver_dbt_workflow
       +materialized: table
     gold:
       +materialized: view
+      ++schema: gold_dbt_workflow

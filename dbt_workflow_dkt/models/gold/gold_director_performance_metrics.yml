@@ -1,0 +1,22 @@
+version: 2
+
+models:
+  - name: gold_director_performance_metrics
+    description: "Analyse des performances des réalisateurs basées sur le nombre de films, la note moyenne et les revenus générés."
+    columns:
+      - name: director
+        description: "Nom du réalisateur."
+        tests:
+          - not_null
+      - name: total_movies_directed
+        description: "Nombre total de films dirigés par le réalisateur."
+        tests:
+          - not_null
+      - name: avg_rating
+        description: "Note moyenne des films du réalisateur."
+        tests:
+          - not_null
+      - name: total_revenue_generated
+        description: "Revenus totaux générés par les films du réalisateur."
+        tests:
+          - not_null

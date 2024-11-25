@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: silver_sales_movies_clean
+    description: >
+      Ce modèle nettoie les données brutes des ventes de films issues de la table Bronze 
+      pour s'assurer de la qualité des données et de leur fiabilité avant analyse.
+    columns:
+      - name: movie_id
+        description: "Identifiant unique (clé primaire)."
+        tests:
+          - not_null
+      - name: rating
+        tests:
+          - custom_range:
+                  min: 0
+                  max: 20
+      - name: directodomestic_salesr
+      - name: international_sales

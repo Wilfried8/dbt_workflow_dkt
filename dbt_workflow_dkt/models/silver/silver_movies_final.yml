@@ -1,0 +1,35 @@
+version: 2
+
+models:
+  - name: silver_movies_final
+    description: >
+      Ce modèle donne la version final de notre table silver.
+    columns:
+      - name: movie_id
+        description: "Identifiant unique (clé primaire)."
+        tests:
+          - not_null
+      - name: rating
+        tests:
+          - custom_range:
+                  min: 0
+                  max: 20
+      - name: directodomestic_salesr
+      - name: international_sales
+      - name: id
+        description: "Identifiant unique du film (clé primaire)."
+        tests:
+          - unique
+          - not_null
+      - name: title
+        description: "Titre du film."
+        tests:
+          - not_null
+      - name: director
+        description: "Nom du réalisateur du film."
+      - name: year
+        description: "Année de sortie du film."
+        tests:
+          - not_null
+      - name: length_minutes
+        description: "Durée du film en minutes."
