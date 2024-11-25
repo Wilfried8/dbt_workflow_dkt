@@ -41,4 +41,4 @@ models:
       +materialized: table
     gold:
       +materialized: view
-      ++schema: gold_dbt_workflow
+      +schema: gold_dbt_workflow
