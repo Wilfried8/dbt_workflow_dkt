@@ -2,3 +2,4 @@ target/
 logs/
 dbt_packages/
 .venv
+.user.yml

@@ -13,3 +13,20 @@ Try running the following commands:
 - Join the [chat](https://community.getdbt.com/) on Slack for live discussions and support
 - Find [dbt events](https://events.getdbt.com) near you
 - Check out [the blog](https://blog.getdbt.com/) for the latest news on dbt's development and best practices
+
+
+### Installation
+1. Installe Poetry :
+   ```bash
+   curl -sSL https://install.python-poetry.org | python3 -
+
+### Installation
+2. poetry install
+3. poetry shell
+4.  dbt run
+    dbt test
+
+5. Ajoute `poetry.lock` et `pyproject.toml` à ton gestionnaire de version
+
+
+
