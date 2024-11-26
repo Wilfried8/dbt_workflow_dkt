@@ -6,6 +6,7 @@ steps:
 
   # Étape 2 : Pousser l'image dans Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'europe-west9-docker.pkg.dev/$PROJECT_ID/dbt-registry/dbt-project:$COMMIT_SHA']
+    args: ['push', 'europe-west9.pkg.dev/$PROJECT_ID/dbt-registry/dbt-project:$COMMIT_SHA']
+    #args: ['push', 'europe-west9-docker.pkg.dev/$PROJECT_ID/dbt-registry/dbt-project:$COMMIT_SHA']
     #args: ['push', 'europe-west9-docker.pkg.dev/$PROJECT_ID/dbt-registry/dbt-project:tag2']
 logsBucket: gs://dbt-logs
