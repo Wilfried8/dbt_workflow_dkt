@@ -1,0 +1,25 @@
+steps:
+  # Étape 1 : Construire une image Docker
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'europe-west9.pkg.dev/$PROJECT_ID/dbt-registry/dbt-project:$COMMIT_SHA', '.']
+
+  # Étape 2 : Pousser l'image dans Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'europe-west9-docker.pkg.dev/$PROJECT_ID/dbt-registry/dbt-project:$COMMIT_SHA']
+
+  # Étape 3 : Déployer sur Cloud Run
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: [
+      'run', 'deploy', 'dbt-service',
+      '--image', 'europe-west9-docker.pkg.dev/$PROJECT_ID/dbt-registry/dbt-project:$COMMIT_SHA',
+      '--region', 'europe-west9',
+      '--platform', 'managed',
+      '--allow-unauthenticated'
+    ]
+
+# Substitutions dynamiques pour rendre le build réutilisable
+substitutions:
+  _SERVICE_NAME: "dbt-service"
+  _REGION: "europe-west9"
+
+timeout: 1200s

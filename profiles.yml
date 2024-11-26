@@ -6,7 +6,8 @@ dbt_workflow_dkt:
       job_retries: 1
       keyfile: /Users/wtayo/keys/dbt_workflow_sa.json
       location: EU
-      method: service-account
+      #method: service-account
+      method: oauth
       priority: interactive
       project: wtayo-sandbox
       threads: 3
