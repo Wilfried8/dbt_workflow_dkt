@@ -11,8 +11,8 @@
 /.envrc
 /Dockerfile
 /LICENSE
-/pyproject.toml
-/poetry.lock
+
+
 /*.md
 /.idea
 *.iml

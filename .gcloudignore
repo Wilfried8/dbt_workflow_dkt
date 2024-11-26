@@ -1,0 +1,9 @@
+# Ignorer les fichiers inutiles
+.git
+.gitignore
+node_modules
+target
+logs
+# Exclure les fichiers volumineux non nécessaires
+*.log
+*.tmp

@@ -28,5 +28,15 @@ Try running the following commands:
 
 5. Ajoute `poetry.lock` et `pyproject.toml` à ton gestionnaire de version
 
+```bash
+gcloud builds submit \
+--region=europe-west1 \
+--tag europe-west9-docker.pkg.dev/wtayo-sandbox/dbt-registry/dbt-project:tag1
+
+```bash
+gcloud builds submit \
+--config=cloudbuild.yaml \
+--substitutions=_SERVICE_NAME="dbt-service",_REGION="europe-west1",COMMIT_SHA="localtest"
+
 
 
