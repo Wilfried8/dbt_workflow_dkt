@@ -1,14 +1,13 @@
 version: 2
-
 sources:
   - name: Bronze_dbt_workflow
     description: "Contient les données brutes provenant de la table bronze_table"
-    #database: BigQuery
     tables:
       - name: raw_movies
         description: "Table contenant les données brutes des films"
         columns:
           - name: id
+            description: "id"
             tests:
               - unique
               - not_null

@@ -1,0 +1,50 @@
+name: Deploy DBT Documentation
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  generate-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Vérifier le dépôt
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # 2. Configurer Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+
+      # 3. Installer les dépendances DBT
+      - name: Install DBT and dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install dbt-bigquery
+
+      # 4. Configurer les credentials (BigQuery par exemple)
+      - name: Set up Google Cloud Credentials
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
+        run: |
+          echo "${{ secrets.GCP_CREDENTIALS }}" > /tmp/credentials.json
+          export GOOGLE_APPLICATION_CREDENTIALS=/tmp/credentials.json
+      
+      - name: Install DBT dependencies
+        run: dbt deps
+
+      # 5. Générer la documentation
+      - name: Generate DBT Docs
+        run: |
+          dbt docs generate
+
+      # 6. Déployer sur GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./target  # Le répertoire où `dbt docs generate` génère les fichiers HTML
