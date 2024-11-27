@@ -31,12 +31,17 @@ Try running the following commands:
 ```bash
 gcloud builds submit \
 --region=europe-west1 \
---tag europe-west9-docker.pkg.dev/wtayo-sandbox/dbt-registry/dbt-project:tag1
+--tag europe-west9-docker.pkg.dev/wtayo-sandbox/dbt-registry/dbt-project:tag1 \
+--verbosity="debug"
 
 ```bash
 gcloud builds submit \
---config=cloudbuild.yaml \
---substitutions=_SERVICE_NAME="dbt-service",_REGION="europe-west1",COMMIT_SHA="localtest"
+--config cloudbuild_build.yaml . 
+
+
+```bash
+gcloud builds submit \
+--config cloudbuild_created.yaml .
 
 
 
