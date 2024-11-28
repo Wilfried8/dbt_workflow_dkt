@@ -1,0 +1,62 @@
+name: Run dbt ci
+
+on:
+  push:
+    branches:
+      - master
+    # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+env:
+  GCP_PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
+jobs:
+  dbt-run:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Create and start virtual environment
+      run: |
+          python -m venv venv
+          source venv/bin/activate
+
+    - name: Install dbt
+      run: pip install dbt-bigquery
+
+    - name: Set up service account key file
+      env:
+        GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
+      run: |
+          echo ${GCP_CREDENTIALS} > ${{github.workspace}}/.github/key.json
+          echo GCP_CREDENTIALS=${{github.workspace}}/.github/key.json >> $GITHUB_ENV
+
+    - name: Authenticate to GCP
+      run: |
+        gcloud auth activate-service-account \
+        dbt-workflow@${{ env.GCP_PROJECT_ID }}.iam.gserviceaccount.com \
+        --key-file $GCP_CREDENTIALS --project ${{ env.GCP_PROJECT_ID }}
+
+    - name: Verify DBT setup
+      env:
+        GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+      run: dbt debug --profiles-dir . --project-dir . --target dev
+
+    - name: Run DBT tests
+      env:
+        GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+      run: |
+        dbt deps --profiles-dir . --project-dir . --target dev
+        dbt compile --profiles-dir . --project-dir . --target dev
+        dbt run --profiles-dir . --project-dir . --target dev
+        dbt test --profiles-dir . --project-dir . --target dev
