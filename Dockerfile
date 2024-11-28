@@ -25,7 +25,7 @@ RUN poetry install --only main --no-root
 COPY --chown=dbtuser:dbtuser . /app
 
 # Set the entrypoint for dbt commands
-ENTRYPOINT ["poetry", "run", "dbt"]
+ENTRYPOINT ["poetry", "run", "dbt", "--profiles-dir ", ".", "--project-dir", "." "--target", "dev"]
 
 # Default command (can be overridden)
 CMD ["run"]
