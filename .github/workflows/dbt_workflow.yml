@@ -48,10 +48,10 @@ jobs:
         --key-file $GCP_CREDENTIALS --project ${{ env.GCP_PROJECT_ID }}
 
     - name: Install dbt packages
-      run: dbt deps --project-dir .
+      run: dbt deps --project-dir . --project-dir . --target prod
 
     - name: Run dbt models
       env:
         GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
       run: |
-        dbt run --profiles-dir .
+        dbt run --profiles-dir . --project-dir . --target prod

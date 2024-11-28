@@ -18,6 +18,7 @@ clean-targets:
 models:
   dbt_workflow_dkt:
     bronze:
+      +schema: bronze_dbt_workflow
       +materialized: view
     silver:
       +schema: silver_dbt_workflow

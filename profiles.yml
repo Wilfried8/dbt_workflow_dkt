@@ -1,7 +1,8 @@
 dbt_workflow_dkt:
   outputs:
     dev:
-      dataset: Bronze_dbt_workflow
+      #dataset: Bronze_dbt_workflow
+      dataset: dev_source_dbt_workflow
       job_execution_timeout_seconds: 200
       job_retries: 1
       keyfile: "{{ env_var('GCP_CREDENTIALS') }}"
@@ -13,4 +14,19 @@ dbt_workflow_dkt:
       #project: "{{ env_var('GCP_PROJECT_ID') }}"
       threads: 3
       type: bigquery
-  target: dev
+    prod:
+      #dataset: Bronze_dbt_workflow
+      dataset: prod_source_dbt_workflow
+      job_execution_timeout_seconds: 200
+      job_retries: 1
+      keyfile: "{{ env_var('GCP_CREDENTIALS') }}"
+      location: EU
+      method: service-account
+      #method: oauth
+      priority: interactive
+      project: wtayo-sandbox
+      #project: "{{ env_var('GCP_PROJECT_ID') }}"
+      threads: 3
+      type: bigquery
+
+    target: dev

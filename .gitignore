@@ -5,3 +5,4 @@ dbt_packages/
 .user.yml
 dbt_docs_gcp.yml
 tmp/
+.github/workflows/dbt-ci.yml

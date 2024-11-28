@@ -2,6 +2,7 @@ version: 2
 sources:
   - name: Bronze_dbt_workflow
     description: "Contient les données brutes provenant de la table bronze_table"
+    schema: "{{ 'dev_source_dbt_workflow' if target.name == 'dev' else 'prod_source_dbt_workflow'}}"
     tables:
       - name: raw_movies
         description: "Table contenant les données brutes des films"
