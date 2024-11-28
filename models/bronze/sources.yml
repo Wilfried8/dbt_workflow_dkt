@@ -8,25 +8,25 @@ sources:
         columns:
           - name: id
             description: "id"
-            tests:
+            data_tests:
               - unique
               - not_null
           - name: title
             description: "Titre du film"
-            tests:
+            data_tests:
               - not_null
           - name: director
             description: "Réalisateur du film"
           - name: year
             description: "Année de sortie du film"
-            tests:
+            data_tests:
               - not_null
               - custom_range: 
                   min: 1700
                   max: 2026
           - name: length_minutes
             description: "Durée du film en minutes"
-            tests:
+            data_tests:
               - not_null
               - custom_range:
                   min: 2
@@ -35,11 +35,11 @@ sources:
         description: "Table contenant les données brutes des ventes de films"
         columns:
           - name: movie_id
-            tests:
+            data_tests:
               - not_null
           - name: rating
             description: "Note moyenne attribuée au film"
-            tests:
+            data_tests:
               - not_null
               - custom_range:
                   min: 0

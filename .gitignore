@@ -4,6 +4,4 @@ dbt_packages/
 .venv
 .user.yml
 dbt_docs_gcp.yml
-silver/
-gold/
 tmp/

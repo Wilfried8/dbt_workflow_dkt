@@ -1,0 +1,21 @@
+# substitutions:
+#   _REPO_NAME: 'dbt-registry'
+#   _REGION: 'europe-west9'
+#   _JOB_NAME: 'dbt-project'
+
+steps:
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'jobs'
+      - 'deploy'
+      - 'dbt-project'
+      - '--image'
+      - 'europe-west9-docker.pkg.dev/${PROJECT_ID}/dbt-registry/dbt-project'
+      - '--region'
+      - 'europe-west9'
+      - '--service-account'
+      - 'dbt-workflow@wtayo-sandbox.iam.gserviceaccount.com'
+      #- '${_JOB_NAME}@${PROJECT_ID}.iam.gserviceaccount.com' # Service account required BigQuery Data Editor role, and Job Runner role
+      # Add any additional flags for your Cloud Run job here

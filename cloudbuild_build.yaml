@@ -1,0 +1,7 @@
+steps:
+  # Docker Build
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 
+           'europe-west9-docker.pkg.dev/${PROJECT_ID}/dbt-registry/dbt-project', 
+           '.']
+images: [ 'europe-west9-docker.pkg.dev/${PROJECT_ID}/dbt-registry/dbt-project' ]

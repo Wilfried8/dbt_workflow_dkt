@@ -1,9 +1,19 @@
-name: Deploy DBT Documentation
+name: "Deploy DBT Documentation"
 
 on:
   push:
     branches:
       - master
+    # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+env:
+  GCP_PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
 
 jobs:
   generate-and-deploy:
@@ -18,21 +28,37 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.9
+          python-version: '3.10'
 
       # 3. Installer les dépendances DBT
-      - name: Install DBT and dependencies
+      - name: Create and start virtual environment
         run: |
-          python -m pip install --upgrade pip
-          pip install dbt-bigquery
+            python -m venv venv
+            source venv/bin/activate
+
+      - name: Install dbt
+        run: pip install dbt-bigquery
 
       # 4. Configurer les credentials (BigQuery par exemple)
-      - name: Set up Google Cloud Credentials
+      - name: Set up service account key file
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
+          GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
         run: |
-          echo "${{ secrets.GCP_CREDENTIALS }}" > /tmp/credentials.json
-          export GOOGLE_APPLICATION_CREDENTIALS=/tmp/credentials.json
+          echo ${GCP_CREDENTIALS} > ${{github.workspace}}/.github/key.json
+          echo GCP_CREDENTIALS=${{github.workspace}}/.github/key.json >> $GITHUB_ENV
+
+      - name: Authenticate to GCP
+        run: |
+          gcloud auth activate-service-account \
+          dbt-workflow@${{ env.GCP_PROJECT_ID }}.iam.gserviceaccount.com \
+          --key-file $GCP_CREDENTIALS --project ${{ env.GCP_PROJECT_ID }}
+
+      - name: Debug Authentication
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git remote -v
+          git branch -a
       
       - name: Install DBT dependencies
         run: dbt deps
@@ -42,9 +68,19 @@ jobs:
         run: |
           dbt docs generate
 
-      # 6. Déployer sur GitHub Pages
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./target  # Le répertoire où `dbt docs generate` génère les fichiers HTML
+      # # 6. Déployer sur GitHub Pages
+      # - name: Deploy to GitHub Pages
+      #   uses: peaceiris/actions-gh-pages@v3
+      #   with:
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}
+      #     publish_dir: ./target # Le répertoire où `dbt docs generate` génère les fichiers HTML
+      #     publish_branch: gh-pages  
+
+      - name: Deploy Documentation to GCS
+        run: |
+          gcloud storage cp -r ./target/* gs://dbt-docs-hostweb
+
+      # Vérifier le déploiement
+      - name: Verify Deployment
+        run: |
+          echo "Documentation deployed to: https://storage.googleapis.com/dbt-docs-hostweb/index.html" 

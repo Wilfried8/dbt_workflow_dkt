@@ -43,5 +43,19 @@ gcloud builds submit \
 gcloud builds submit \
 --config cloudbuild_created.yaml .
 
+```bash
+gcloud storage buckets create gs://dbt-docs-hostweb \
+--location=EU \
+--storage-class=STANDARD
+
+gcloud storage buckets update gs://dbt-docs-hostweb \
+--website-main-page=index.html \
+--website-not-found-page=404.html
+
+gcloud storage buckets add-iam-policy-binding gs://dbt-docs-hostweb \
+--member=allUsers \
+--role=roles/storage.objectViewer
+
+
 
 

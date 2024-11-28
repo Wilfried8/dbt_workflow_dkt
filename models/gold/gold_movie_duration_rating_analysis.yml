@@ -1,0 +1,25 @@
+version: 2
+
+models:
+  - name: gold_movie_duration_rating_analysis
+    description: "Analyse de la durée des films et de leur succès en termes de note et de revenus."
+    columns:
+      - name: movie_id
+        description: "Identifiant unique du film."
+        tests:
+          - not_null
+          - unique
+      - name: length_minutes
+        description: "Durée du film en minutes."
+        tests:
+          - not_null
+      - name: rating
+        description: "Note attribuée au film (entre 0 et 10)."
+        tests:
+          - not_null
+      - name: duration_category
+        description: "Catégorie de durée ('Short', 'Standard', 'Long')."
+        tests:
+          - not_null
+          - accepted_values:
+              values: ["Short", "Standard", "Long"]
